@@ -29,4 +29,25 @@ pub mod sol_trust {
         instructions::initialize_soltrust_config(_ctx, config_index, deposit_fee)?;
         Ok(())
     }
+
+    // Test is pending of it.
+    pub fn update_soltrust_config(
+        _ctx: Context<UpdateSolTrust>,
+        index: u8,
+        value: u16,
+    ) -> Result<()> {
+        instructions::update_soltrust_config(_ctx, index, value)?;
+
+        Ok(())
+    }
+
+    //Test is Pending
+    pub fn create_bank_account(
+        _ctx: Context<CreateBankAccount>,
+        name: String,
+        thread_id: Vec<u8>,
+    ) -> Result<()> {
+        instructions::create_bank_account(_ctx, name, thread_id)?;
+        Ok(())
+    }
 }
