@@ -5,7 +5,6 @@ use crate::{constants::*, CreateBankAccounts, SolTrustConfig};
 pub fn create_bank_account(
     _ctx: Context<CreateBankAccount>,
     name: String,
-    thread_id: Vec<u8>,
 ) -> Result<()> {
    
 
@@ -17,8 +16,8 @@ pub fn create_bank_account(
 create_bank_account.holder = _ctx.accounts.signer.key();
 create_bank_account.balance = 0;
 create_bank_account.holder_name = name;
-create_bank_account.thread_id = thread_id;
 create_bank_account.created_at = clock.unix_timestamp;
+create_bank_account.updated_at = clock.unix_timestamp;
 
 msg!("Created At :  {clock.unix_timestamp}");
 
@@ -28,7 +27,7 @@ msg!("Created At :  {clock.unix_timestamp}");
 
 
 #[derive(Accounts)]
-#[instruction(name : String, thread_id : Vec<u8>)]
+#[instruction(name : String)]
 pub struct CreateBankAccount<'info> {
     // Address to be set as the owner.
     #[account(mut)]
@@ -40,7 +39,7 @@ pub struct CreateBankAccount<'info> {
     #[account(
         init,
         payer = signer,
-        seeds= [&name.as_bytes(), CREATE_BANK_ACCOUNT.as_bytes()], 
+        seeds= [&name.as_ref(), CREATE_BANK_ACCOUNT.as_bytes()], 
         bump, 
         space = 8 + CreateBankAccounts::LEN)]
 

@@ -7,4 +7,7 @@ pub enum ErrorCode {
 
     #[msg("InvalidUpdateConfigFlag")]
     InvalidUpdateConfigFlag,
+
+    #[msg("IncorrectAmount")]
+    InvalidAmount,
 }

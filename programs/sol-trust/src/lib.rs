@@ -4,6 +4,7 @@ pub mod errors;
 pub mod instructions;
 pub mod states;
 
+use crate::errors::ErrorCode;
 use crate::instructions::*;
 use crate::states::*;
 
@@ -42,12 +43,15 @@ pub mod sol_trust {
     }
 
     //Test is Pending
-    pub fn create_bank_account(
-        _ctx: Context<CreateBankAccount>,
-        name: String,
-        thread_id: Vec<u8>,
-    ) -> Result<()> {
-        instructions::create_bank_account(_ctx, name, thread_id)?;
+    pub fn create_bank_account(_ctx: Context<CreateBankAccount>, name: String) -> Result<()> {
+        instructions::create_bank_account(_ctx, name)?;
+        Ok(())
+    }
+
+    //Test is Pending
+    pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u16, name: String) -> Result<()> {
+        require!(amount > 0, ErrorCode::InvalidAmount);
+        instructions::deposit_money(_ctx, amount, name)?;
         Ok(())
     }
 }
