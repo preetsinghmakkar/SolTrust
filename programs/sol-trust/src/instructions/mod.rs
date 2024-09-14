@@ -9,3 +9,12 @@ pub use create_bank_account_instruction::*;
 
 pub mod deposit_money;
 pub use deposit_money::*;
+
+pub mod withdraw_money;
+pub use withdraw_money::*;
+
+pub mod initialize_admin_withdrawal_account;
+pub use initialize_admin_withdrawal_account::*;
+
+pub mod withdraw_fees;
+pub use withdraw_fees::*;

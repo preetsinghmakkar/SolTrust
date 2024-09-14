@@ -25,9 +25,15 @@ pub mod sol_trust {
     pub fn initialize_soltrust_config(
         _ctx: Context<InitializeSolTrust>,
         config_index: u8,
-        deposit_fee: u16,
     ) -> Result<()> {
-        instructions::initialize_soltrust_config(_ctx, config_index, deposit_fee)?;
+        instructions::initialize_soltrust_config(_ctx, config_index)?;
+        Ok(())
+    }
+
+    pub fn initialize_admin_withdrawal_account(
+        _ctx: Context<AdminWithdrawalAccount>,
+    ) -> Result<()> {
+        instructions::initialize_admin_withdrawal_account(_ctx)?;
         Ok(())
     }
 
@@ -49,9 +55,24 @@ pub mod sol_trust {
     }
 
     //Test is Pending
-    pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u16, name: String) -> Result<()> {
+
+    //name - name of the holder
+    pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, name: String) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
         instructions::deposit_money(_ctx, amount, name)?;
+        Ok(())
+    }
+
+    //name - name of the holder
+    pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64, name: String) -> Result<()> {
+        require!(amount > 0, ErrorCode::InvalidAmount);
+        instructions::withdraw_money(_ctx, amount, name)?;
+        Ok(())
+    }
+
+    // withdraw fees
+    pub fn withdraw_fees(_ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
+        instructions::withdraw_fees(_ctx, amount)?;
         Ok(())
     }
 }

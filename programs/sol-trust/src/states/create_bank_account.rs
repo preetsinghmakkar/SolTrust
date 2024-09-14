@@ -15,7 +15,7 @@ impl CreateBankAccounts {
     pub const LEN: usize = 8 + 32 + 64 + 8 + 8 + 8;
 
     pub fn is_account_authorized<'info>(&self, signer: Pubkey) -> Result<()> {
-        require!(signer.key() == self.holder, ErrorCode::NotApproved);
+        require!(signer == self.holder, ErrorCode::NotApproved);
         Ok(())
     }
 }

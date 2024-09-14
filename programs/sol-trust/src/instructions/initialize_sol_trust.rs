@@ -7,14 +7,11 @@ use crate::sol_trust_config::*;
 pub fn initialize_soltrust_config(
     _ctx: Context<InitializeSolTrust>,
     config_index: u8,
-    deposit_fee: u16,
 ) -> Result<()> {
-    msg!("Deposit Fee : {}", deposit_fee);
     msg!("Index Config : {}", config_index);
 
     let sol_trust_config = &mut _ctx.accounts.soltrustconfig;
     sol_trust_config.config_index = config_index;
-    sol_trust_config.deposit_fee = deposit_fee;
     sol_trust_config.owner = _ctx.accounts.owner.key();
 
     Ok(())

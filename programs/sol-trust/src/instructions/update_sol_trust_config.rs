@@ -7,7 +7,6 @@ pub fn update_soltrust_config(ctx: Context<UpdateSolTrust>, index: u8, value: u1
 
     match index {
         0 => update_config_index(soltrustconfigs, value),
-        1 => update_config_deposit_fee(soltrustconfigs, value),
         _ => return err!(ErrorCode::InvalidUpdateConfigFlag),
     };
 
@@ -30,8 +29,4 @@ pub struct UpdateSolTrust<'info> {
 pub fn update_config_index(soltrustconfigs: &mut Account<SolTrustConfig>, value: u16) {
     let val = value as u8;
     soltrustconfigs.config_index = val;
-}
-
-pub fn update_config_deposit_fee(soltrustconfigs: &mut Account<SolTrustConfig>, value: u16) {
-    soltrustconfigs.deposit_fee = value;
 }
