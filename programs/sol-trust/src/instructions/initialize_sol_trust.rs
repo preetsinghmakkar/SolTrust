@@ -18,7 +18,7 @@ pub fn initialize_soltrust_config(
 }
 
 #[derive(Accounts)]
-#[instruction(config_index : u8, deposit_fee : u16)]
+#[instruction(config_index : u8)]
 pub struct InitializeSolTrust<'info> {
     // Address to be set as the owner.
     #[account(mut,
@@ -31,7 +31,6 @@ pub struct InitializeSolTrust<'info> {
         seeds= [&config_index.to_be_bytes(), SOLTRUST_CONFIG_SEED.as_bytes()], 
         bump, 
         space = SolTrustConfig::LEN)]
-
     pub soltrustconfig: Account<'info, SolTrustConfig>,
 
     pub system_program: Program<'info, System>,

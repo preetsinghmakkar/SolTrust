@@ -37,7 +37,6 @@ pub mod sol_trust {
         Ok(())
     }
 
-    // Test is pending of it.
     pub fn update_soltrust_config(
         _ctx: Context<UpdateSolTrust>,
         index: u8,
@@ -48,14 +47,12 @@ pub mod sol_trust {
         Ok(())
     }
 
-    //Test is Pending
     pub fn create_bank_account(_ctx: Context<CreateBankAccount>, name: String) -> Result<()> {
         instructions::create_bank_account(_ctx, name)?;
         Ok(())
     }
 
     //Test is Pending
-
     //name - name of the holder
     pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, name: String) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
@@ -63,6 +60,7 @@ pub mod sol_trust {
         Ok(())
     }
 
+    //Test is Pending
     //name - name of the holder
     pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64, name: String) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
@@ -70,6 +68,7 @@ pub mod sol_trust {
         Ok(())
     }
 
+    //Test is Pending
     // withdraw fees
     pub fn withdraw_fees(_ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
         instructions::withdraw_fees(_ctx, amount)?;
