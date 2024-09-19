@@ -9,7 +9,7 @@ pub struct SolTrustConfig {
 }
 
 impl SolTrustConfig {
-    pub const LEN: usize = 8 + 32 + 1;
+    pub const LEN: usize = 8 + 32 + 1 + 8;
 
     pub fn is_authorized<'info>(&self, signer: &Signer<'info>) -> Result<()> {
         require!(signer.key() == self.owner, ErrorCode::NotApproved);

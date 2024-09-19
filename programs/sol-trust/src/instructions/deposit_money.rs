@@ -5,6 +5,12 @@ use anchor_lang::solana_program::system_instruction;
 
 pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, _name: String) -> Result<()> {
     let create_bank_account = &mut _ctx.accounts.create_bank_account;
+
+    msg!(
+        "Expected Deposit Money PDA: {:?}",
+        create_bank_account.key()
+    );
+
     let signer = _ctx.accounts.signer.key();
 
     // Check if the account is authorized
@@ -37,7 +43,7 @@ pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, _name: String) ->
 }
 
 #[derive(Accounts)]
-#[instruction(amount: u16, _name: String)]
+#[instruction(amount: u16)]
 pub struct DepositMoney<'info> {
     #[account(mut)]
     pub signer: Signer<'info>, // The person who is depositing the money
@@ -46,7 +52,7 @@ pub struct DepositMoney<'info> {
 
     #[account(
         mut,
-        seeds = [&_name.as_ref(), CREATE_BANK_ACCOUNT.as_bytes()],
+        seeds = [&signer.key().to_bytes(), CREATE_BANK_ACCOUNT.as_bytes()],
         bump,
     )]
     pub create_bank_account: Account<'info, CreateBankAccounts>, // The PDA account that receives the SOL

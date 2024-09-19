@@ -15,7 +15,6 @@ pub fn initialize_admin_withdrawal_account(
 }
 
 #[derive(Accounts)]
-#[instruction(config_index : u8, deposit_fee : u16)]
 pub struct AdminWithdrawalAccount<'info> {
     // Address to be set as the owner.
     #[account(mut,

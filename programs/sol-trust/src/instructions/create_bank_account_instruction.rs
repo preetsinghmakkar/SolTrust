@@ -12,7 +12,12 @@ pub fn create_bank_account(
 
    let create_bank_account = &mut _ctx.accounts.create_bank_account;
 
-  
+
+   msg!("Expected create_bank_account PDA: {:?}", create_bank_account.key());
+
+
+
+
 create_bank_account.holder = _ctx.accounts.signer.key();
 create_bank_account.balance = 0;
 create_bank_account.holder_name = name;
@@ -26,21 +31,22 @@ msg!("Created At :  {clock.unix_timestamp}");
 
 
 #[derive(Accounts)]
-#[instruction(name : String)]
 pub struct CreateBankAccount<'info> {
    
     #[account(mut)]
     pub signer: Signer<'info>,
 
     /// Which config the Bank belongs to.
+    #[account(mut)]
     pub soltrustconfig: Box<Account<'info, SolTrustConfig>>,
 
     #[account(
         init,
         payer = signer,
-        seeds= [&name.as_ref(), CREATE_BANK_ACCOUNT.as_bytes()], 
+        seeds = [&signer.key().to_bytes(), CREATE_BANK_ACCOUNT.as_bytes()], 
         bump, 
-        space = 8 + CreateBankAccounts::LEN)]
+        space = 32 + CreateBankAccounts::LEN
+    )]
     pub create_bank_account: Account<'info, CreateBankAccounts>,
 
     pub system_program: Program<'info, System>,
