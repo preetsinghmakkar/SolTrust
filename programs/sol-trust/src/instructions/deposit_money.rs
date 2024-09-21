@@ -3,7 +3,7 @@ use crate::{constants::*, CreateBankAccounts};
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::system_instruction;
 
-pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, _name: String) -> Result<()> {
+pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64) -> Result<()> {
     let create_bank_account = &mut _ctx.accounts.create_bank_account;
 
     msg!(

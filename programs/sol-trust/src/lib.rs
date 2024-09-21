@@ -47,24 +47,24 @@ pub mod sol_trust {
         Ok(())
     }
 
-    pub fn create_bank_account(_ctx: Context<CreateBankAccount>, name: String) -> Result<()> {
+    pub fn create_bank_account(_ctx: Context<CreateBankAccount>, name: [u8; 32]) -> Result<()> {
         instructions::create_bank_account(_ctx, name)?;
         Ok(())
     }
 
     //Test is Pending
     //name - name of the holder
-    pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64, name: String) -> Result<()> {
+    pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
-        instructions::deposit_money(_ctx, amount, name)?;
+        instructions::deposit_money(_ctx, amount)?;
         Ok(())
     }
 
     //Test is Pending
     //name - name of the holder
-    pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64, name: String) -> Result<()> {
+    pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
-        instructions::withdraw_money(_ctx, amount, name)?;
+        instructions::withdraw_money(_ctx, amount)?;
         Ok(())
     }
 

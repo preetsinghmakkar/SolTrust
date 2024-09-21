@@ -4,7 +4,7 @@ use crate::{constants::*, CreateBankAccounts, SolTrustConfig};
 
 pub fn create_bank_account(
     _ctx: Context<CreateBankAccount>,
-    name: String,
+    name: [u8; 32],
 ) -> Result<()> {
    
 
