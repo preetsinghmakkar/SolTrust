@@ -52,24 +52,18 @@ pub mod sol_trust {
         Ok(())
     }
 
-    //Test is Pending
-    //name - name of the holder
     pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
         instructions::deposit_money(_ctx, amount)?;
         Ok(())
     }
 
-    //Test is Pending
-    //name - name of the holder
     pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64) -> Result<()> {
         require!(amount > 0, ErrorCode::InvalidAmount);
         instructions::withdraw_money(_ctx, amount)?;
         Ok(())
     }
 
-    //Test is Pending
-    // withdraw fees
     pub fn withdraw_fees(_ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
         instructions::withdraw_fees(_ctx, amount)?;
         Ok(())

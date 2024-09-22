@@ -7,10 +7,18 @@ pub fn withdraw_fees(ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
     let admin_account = &mut ctx.accounts.admin_account;
     let admin = &mut ctx.accounts.admin;
 
-    let lamports = amount * 1_000_000_000; // Amount in lamports
+    msg!("Amount to Withdraw: {}", amount);
+
+    let lamports = amount * 1000000000; // Amount in lamports
+
+    msg!("Entered Fees in Lamports to withdraw : {}", lamports);
 
     // Ensure the admin has enough balance to withdraw
     require!(admin_account.balance >= lamports, ErrorCode::InvalidAmount);
+
+    msg!("Balance of the Admin Account : {}", admin_account.balance);
+
+    msg!("Admin ID : {}", admin.key());
 
     // Transfer lamports to the admin
     **admin_account.to_account_info().try_borrow_mut_lamports()? -= lamports;
@@ -19,6 +27,7 @@ pub fn withdraw_fees(ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
     // Update the admin account balance
     admin_account.balance -= lamports; // Subtract the withdrawn amount from the balance
 
+    msg!("Admin Balance after updating : {}", admin_account.balance);
     Ok(())
 }
 
