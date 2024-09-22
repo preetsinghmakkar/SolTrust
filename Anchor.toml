@@ -11,7 +11,7 @@ sol_trust = "8Go6TspKm3rMV3N4ueARF8MqptuBAEP5H7iDP7XLSMcX"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "Devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
