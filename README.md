@@ -1,1 +1,1 @@
-## Solana Bank + Escrow Contract
+## SolTrust - Solana Bank
