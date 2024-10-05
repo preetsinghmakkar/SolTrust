@@ -13,4 +13,10 @@ pub enum ErrorCode {
 
     #[msg("NameTooLong")]
     NameTooLong,
+
+    #[msg("Overflow")]
+    OverflowError,
+
+    #[msg("Underflow")]
+    UnderFlowError,
 }

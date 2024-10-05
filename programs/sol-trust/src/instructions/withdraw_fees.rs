@@ -21,11 +21,24 @@ pub fn withdraw_fees(ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
     msg!("Admin ID : {}", admin.key());
 
     // Transfer lamports to the admin
-    **admin_account.to_account_info().try_borrow_mut_lamports()? -= lamports;
-    **admin.to_account_info().try_borrow_mut_lamports()? += lamports;
+
+    admin_account
+        .to_account_info()
+        .try_borrow_mut_lamports()?
+        .checked_sub(lamports)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?;
+
+    admin
+        .to_account_info()
+        .try_borrow_mut_lamports()?
+        .checked_add(lamports)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
 
     // Update the admin account balance
-    admin_account.balance -= lamports; // Subtract the withdrawn amount from the balance
+    admin_account.balance = admin_account
+        .balance
+        .checked_sub(lamports)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?; // Subtract the withdrawn amount from the balance
 
     msg!("Admin Balance after updating : {}", admin_account.balance);
     Ok(())

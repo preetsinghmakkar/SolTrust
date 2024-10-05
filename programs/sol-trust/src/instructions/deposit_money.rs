@@ -1,3 +1,4 @@
+use crate::errors::ErrorCode;
 use crate::sol_trust_config::*;
 use crate::{constants::*, CreateBankAccounts};
 use anchor_lang::prelude::*;
@@ -37,7 +38,10 @@ pub fn deposit_money(_ctx: Context<DepositMoney>, amount: u64) -> Result<()> {
     )?;
 
     // Update the account balance
-    create_bank_account.balance += lamports;
+    create_bank_account.balance = create_bank_account
+        .balance
+        .checked_add(lamports)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
 
     Ok(())
 }

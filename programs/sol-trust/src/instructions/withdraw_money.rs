@@ -20,28 +20,56 @@ pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64) -> Result<()> {
     );
 
     // Calculate fee (0.1% of the withdrawal amount)
-    let fee = (lamports as f64 * 0.001) as u64;
-    let amount_after_fee = lamports - fee;
+    let fee = lamports
+        .checked_div(1000)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?; // 0.1% = 1/1000
+    let amount_after_fee = lamports
+        .checked_sub(fee)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?;
     let admin_withdrawal_account = &mut _ctx.accounts.admin_withdraw_account;
 
-    // Transfer the fee to the admin account
+    // Transfer the fee to the admin account safely
     **create_bank_account
         .to_account_info()
-        .try_borrow_mut_lamports()? -= fee;
+        .try_borrow_mut_lamports()? = create_bank_account
+        .to_account_info()
+        .lamports()
+        .checked_sub(fee)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?;
+
     **admin_withdrawal_account
         .to_account_info()
-        .try_borrow_mut_lamports()? += fee;
+        .try_borrow_mut_lamports()? = admin_withdrawal_account
+        .to_account_info()
+        .lamports()
+        .checked_add(fee)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
 
-    admin_withdrawal_account.balance += fee;
+    admin_withdrawal_account.balance = admin_withdrawal_account
+        .balance
+        .checked_add(fee)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
 
-    //Transferring Money after deducting fee to the withdrawer
+    // Transfer the remaining lamports to the withdrawer safely
     **create_bank_account
         .to_account_info()
-        .try_borrow_mut_lamports()? -= amount_after_fee;
-    **withdrawer.to_account_info().try_borrow_mut_lamports()? += amount_after_fee;
+        .try_borrow_mut_lamports()? = create_bank_account
+        .to_account_info()
+        .lamports()
+        .checked_sub(amount_after_fee)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?;
 
-    // **Update the bank account's balance**
-    create_bank_account.balance -= lamports;
+    **withdrawer.to_account_info().try_borrow_mut_lamports()? = withdrawer
+        .to_account_info()
+        .lamports()
+        .checked_add(amount_after_fee)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
+
+    // Update the bank account's balance safely
+    create_bank_account.balance = create_bank_account
+        .balance
+        .checked_sub(lamports)
+        .ok_or_else(|| error!(ErrorCode::UnderFlowError))?;
 
     Ok(())
 }
