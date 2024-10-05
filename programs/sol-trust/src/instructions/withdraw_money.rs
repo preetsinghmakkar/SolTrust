@@ -12,7 +12,9 @@ pub fn withdraw_money(_ctx: Context<WithdrawMoney>, amount: u64) -> Result<()> {
     create_bank_account.is_account_authorized(signer)?;
 
     // The `amount` should be converted in lamports
-    let lamports = amount * 1000000000;
+    let lamports = amount
+        .checked_mul(1000000000)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?;
 
     require!(
         create_bank_account.balance >= lamports,

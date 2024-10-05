@@ -9,7 +9,9 @@ pub fn withdraw_fees(ctx: Context<WithdrawFees>, amount: u64) -> Result<()> {
 
     msg!("Amount to Withdraw: {}", amount);
 
-    let lamports = amount * 1000000000; // Amount in lamports
+    let lamports = amount
+        .checked_mul(1000000000)
+        .ok_or_else(|| error!(ErrorCode::OverflowError))?; // Amount in lamports
 
     msg!("Entered Fees in Lamports to withdraw : {}", lamports);
 
